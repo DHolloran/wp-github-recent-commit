@@ -4,7 +4,11 @@
  */
 class WP_Github_Recent_Commit_Widget extends WP_Widget {
 	private $fields = array(
-		'title'          => 'Title (optional)',
+		'title'          				=> 'Title (optional)',
+		'github_username' 			=> 'Github Username',
+		'show_octocat' 					=> 'Show Random Octocat',
+		'octocat_size_width'		=>	'Octocat Width',
+		'octocat_size_height'		=>	'Octocat Height'
 	);
 
 	function __construct() {
@@ -37,7 +41,7 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 		ob_start();
 		extract($args, EXTR_SKIP);
 
-		// $title = apply_filters('widget_title', empty($instance['title']) ? __('', 'roots') : $instance['title'], $instance, $this->id_base);
+		$title = apply_filters('widget_title', empty($instance['title']) ? __('', 'roots') : $instance['title'], $instance, $this->id_base);
 
 		foreach($this->fields as $name => $label) {
 			if (!isset($instance[$name])) { $instance[$name] = ''; }
@@ -45,9 +49,9 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 
 		echo $before_widget;
 
-		// if ($title) {
-		//   echo $before_title, $title, $after_title;
-		// }
+		if ($title) {
+		  echo $before_title, $title, $after_title;
+		}
 		require_once "views/view-github-widget.php";
 		echo $after_widget;
 
@@ -78,8 +82,17 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 			${$name} = isset($instance[$name]) ? esc_attr($instance[$name]) : '';
 		?>
 		<p>
-			<label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php _e("{$label}:", 'roots'); ?></label>
-			<input class="widefat" id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" type="text" value="<?php echo ${$name}; ?>">
+
+			<?php if ( $name != 'show_octocat' ): ?>
+				<label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php _e("{$label}:", 'roots'); ?></label>
+				<input class="widefat" id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" type="text" value="<?php echo ${$name}; ?>">
+			<?php else: ?>
+
+				<?php $checked = ( ${$name} == 'on' OR !isset($instance[$name]) ) ? 'checked="checked"': ''; ?>
+				<input id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" type="checkbox" value="on"<?php echo $checked; ?>>
+				<label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php _e("{$label}", 'roots'); ?></label>
+			<?php endif ?>
+
 		</p>
 		<?php
 		}
