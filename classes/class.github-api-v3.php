@@ -6,13 +6,17 @@ class DH_Github_API_v3
 {
 	protected $github_url;
 	protected $github_user;
+	protected $flush_cache;
+	protected $widget_id;
 
 /*
 * Constructor
 */
-	public function __construct() {
+	public function __construct( $username, $widget_id ) {
 		$this->github_url = 'https://api.github.com';
-		$this->github_user = 'dholloran';
+		$this->github_user = $username;
+		$this->flush_cache = false;
+		$this->widget_id;
 	} // __construct()
 
 
@@ -33,7 +37,7 @@ class DH_Github_API_v3
 */
 	protected function get_repos()
 	{
-		$cache_key = 'github_repos';
+		$cache_key = 'github_repos_' . $this->widget_id;
 		$offset = 60 * 60 * 60; // 1 hour
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
@@ -57,7 +61,7 @@ class DH_Github_API_v3
 */
 	protected function get_commits( $repo_names )
 	{
-		$cache_key = 'github_commits';
+		$cache_key = 'github_commits_' . $this->widget_id;
 		if ( $this->use_cache( $cache_key ) ) {
 			$commits = $this->get_cache( $cache_key );
 		} else {
@@ -163,7 +167,7 @@ class DH_Github_API_v3
 */
 	protected function get_random_octocat()
 	{
-		$cache_key = 'github_octocats';
+		$cache_key = 'github_octocats_' . $this->widget_id;
 		$offset = 24 * 60 * 60; // Once a day
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
@@ -193,6 +197,7 @@ class DH_Github_API_v3
 
 		// Cache Time
 		update_option( $cache_key . '_updated', time() );
+
 	} // update_cache()
 
 
