@@ -20,3 +20,14 @@ require_once "classes/class.wpgrc-init.php";
 register_activation_hook( __FILE__, array( 'WPGRC_Init', 'on_activate' ) );
 register_deactivation_hook( __FILE__, array( 'WPGRC_Init', 'on_deactivate' ) );
 register_uninstall_hook( __FILE__, array( 'WPGRC_Init', 'on_uninstall' ) );
+
+/**
+* Setup Widget
+*/
+require_once "classes/class.github-api-v3.php";
+require_once "widget/github-widget.php";
+function wpgrc_widgets_init()
+{
+	register_widget( 'WP_Github_Recent_Commit_Widget' );
+}
+add_action('widgets_init', 'wpgrc_widgets_init');
