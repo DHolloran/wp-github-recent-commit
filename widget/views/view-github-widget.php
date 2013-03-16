@@ -1,6 +1,9 @@
 <?php
-// Template Name: Github API
-$github_api = new DH_Github_API_v3();
+extract( $args );
+extract($instance);
+$octocat_height = ( isset( $octocat_size_height ) AND is_numeric( $octocat_size_height ) ) ? floor( $octocat_size_height ) : 100;
+$octocat_width = ( isset( $octocat_size_width ) AND is_numeric( $octocat_size_width ) ) ? floor( $octocat_size_width ) : 100;
+$github_api = new DH_Github_API_v3( strtolower( $github_username ), $widget_id );
 $widget_content = $github_api->widget_content();
 extract( $widget_content );
 extract( $octocat );
@@ -12,7 +15,7 @@ $repo_name = $repo_text[1];
 <!-- GITHUB LAST COMMIT WIDGET -->
 <div class="github-last-commit pull-left">
 	<div class="github-commit-octocat polaroid pull-left">
-		<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="100" height="100">
+		<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="<?php echo $octocat_width; ?>" height="<?php echo $octocat_height; ?>">
 	</div>
 	<div class="pull-left github-commit-info-wrap">
 		<div class="clear github-commit-repo-title">
