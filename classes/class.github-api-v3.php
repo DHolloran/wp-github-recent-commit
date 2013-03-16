@@ -34,7 +34,7 @@ class DH_Github_API_v3
 	protected function get_repos()
 	{
 		$cache_key = 'github_repos';
-		$offset = 30 * 60 * 60; // 30 minutes
+		$offset = 60 * 60 * 60; // 1 hour
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
 			$repo_names = $this->get_cache( $cache_key );
@@ -164,7 +164,7 @@ class DH_Github_API_v3
 	protected function get_random_octocat()
 	{
 		$cache_key = 'github_octocats';
-		$offset = 24 * 60 * 60;
+		$offset = 24 * 60 * 60; // Once a day
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
 			$octocats = $this->get_cache( $cache_key );
@@ -211,7 +211,7 @@ class DH_Github_API_v3
 	protected function use_cache( $cache_key, $offset = null )
 	{
 		$last_update_time = $this->get_cache_time( $cache_key );
-		$offset = ( is_null( $offset ) ) ? 10 * 60 * 60 : $offset; // Default Offset 10 minutes
+		$offset = ( is_null( $offset ) ) ? 30 * 60 * 60 : $offset; // Default Offset 30 minutes
 		if ( $last_update_time AND $last_update_time > time() - $offset )
 			return TRUE;
 
