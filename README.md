@@ -1,4 +1,4 @@
-#WP Multi File Uploader
+#WP Github Recent Commit
 
 **Description:** Wordpress widget that grabs a random Octocat from the octodex and the latest commit from the master branch of a public GitHub repository
 
