@@ -1,6 +1,7 @@
 <?php
 /**
-*
+* Handles retrieving data from the GitHub v3 API
+* @author Dan Holloran
 */
 class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 {
@@ -13,7 +14,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 * Constructor
 */
 	public function __construct( $username, $widget_id ) {
-		parent::__construct();
+		parent::__construct( $username );
 		$this->github_url = 'https://api.github.com';
 		$this->github_user = $username;
 		$this->flush_cache = FALSE;
@@ -79,7 +80,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 				$repo_commits = json_decode( wp_remote_retrieve_body( $get_commits ), TRUE );
 				if ( !empty( $repo_commits ) ) {
 					$last_commit = $repo_commits[0];
-					array_push( $commits, $repo_commits[0] );
+					array_push( $commits, $last_commit );
 				} // if()
 			} // foreach()
 
