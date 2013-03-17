@@ -29,7 +29,7 @@ if ( !empty( $widget_content ) ) {
 
 		<ul class="pull-left wpgrc-commit-info-wrap">
 			<li class="clear wpgrc-commit-repo-title">
-				<a href="https://wpgrc.com/<?php echo $owner_name; ?>" class="wpgrc-repo-owner" target="_blank"><?php echo $owner_name; ?></a>
+				<a href="https://wpgrc.com/<?php echo $owner_name; ?>" class="wpgrc-repo-owner" target="_blank">https://github.com/<?php echo $owner_name; ?></a>
 				<span>/</span>
 				<a href="<?php echo $repo_url; ?>" " class="wpgrc-repo-url" target="_blank"><?php echo $repo_name; ?></a>
 			</li>
