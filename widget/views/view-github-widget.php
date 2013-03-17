@@ -18,21 +18,25 @@ if ( !empty( $widget_content ) ) {
 	?>
 
 	<!-- WPGRC WIDGET -->
+	<?php if ( $show_octocat == 'on' ): ?>
 	<div class="wpgrc-widget pull-left">
-		<?php if ( $show_octocat == 'on' ): ?>
 		<div class="wpgrc-commit-octocat polaroid pull-left">
 			<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="<?php echo $octocat_width; ?>" height="<?php echo $octocat_height; ?>">
 		</div> <!-- /.wpgrc-commit-octocat -->
-		<?php endif ?>
+	<?php else: ?>
+	<div class="wpgrc-widget no-octocat pull-left">
+	<?php endif ?>
 
 		<ul class="pull-left wpgrc-commit-info-wrap">
 			<li class="clear wpgrc-commit-repo-title">
-				<a href="https://wpgrc.com/<?php echo $owner_name; ?>" target="_blank"><?php echo $owner_name; ?></a><span>/</span><a href="<?php echo $repo_url; ?>" target="_blank"><?php echo $repo_name; ?></a>
+				<a href="https://wpgrc.com/<?php echo $owner_name; ?>" class="wpgrc-repo-owner" target="_blank"><?php echo $owner_name; ?></a>
+				<span>/</span>
+				<a href="<?php echo $repo_url; ?>" " class="wpgrc-repo-url" target="_blank"><?php echo $repo_name; ?></a>
 			</li>
 			<li class="clear wpgrc-commit-message pull-left"><?php echo $message; ?></li>
 			<li class="clear wpgrc-commit-author-wrap pull-left">
-				<span class="pull-left">Commited by:&nbsp;</span>
-				<a href="<?php echo $author_url; ?>" class="pull-left wpgrc-commit-author" target="_blank"><?php echo $author; ?></a>
+				<span>Commited by:&nbsp;</span>
+				<a href="<?php echo $author_url; ?>" class="wpgrc-commit-author" target="_blank"><?php echo $author; ?></a>
 			</li>
 		</ul> <!-- /. wpgrc-commit-info-wrap -->
 	</div> <!-- /.wpgrc-widget -->
