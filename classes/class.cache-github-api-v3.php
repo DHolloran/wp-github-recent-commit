@@ -5,33 +5,39 @@
 class Cache_Github_Api_V3
 {
 
-/**
-* Constructor
-*/
-	function __construct()
+	protected $github_username;
+
+
+	/**
+	* Constructor
+	*/
+	function __construct( $username )
 	{
+
+		$this->github_username = $username;
 	} // __construct()
 
-/**
-* Check If New Widget User
-*/
-protected function is_new_user()
-{
-	$key = 'github_username' . $this->widget_id;
-	$new_username = ( !empty( $this->github_username ) ) ? $this->github_username : '';
-	$current_username = get_option( $key, FALSE );
-	if ( !$current_username OR $current_username !== $new_user ) {
-		return TRUE;
-		update_option( $key,  $new_username );
-	}
 
-	return FALSE;
-} // is_new_user()
+	/**
+	* Check If New Widget User
+	*/
+	protected function is_new_user()
+	{
+		$key = 'github_username' . $this->widget_id;
+		$new_username = ( !empty( $this->github_username ) ) ? $this->github_username : '';
+		$current_username = get_option( $key, FALSE );
+		if ( !$current_username OR $current_username !== $new_username ) {
+			update_option( $key,  $new_username );
+			return TRUE;
+		}
+
+		return FALSE;
+	} // is_new_user()
 
 
-/*
-* Update Cache
-*/
+	/**
+	* Update Cache
+	*/
 	protected function update_cache( $cache_key, $cache_content )
 	{
 		// Cache Content
@@ -39,20 +45,20 @@ protected function is_new_user()
 
 		// Cache Time
 		update_option( $cache_key . '_updated', time() );
-
 	} // update_cache()
 
 
-/*
-* Get Cache
-*/
+	/**
+	* Get Cache
+	*/
 	function get_cache( $cache_key )
 	{
+
 		return get_option( $cache_key, FALSE );
-	}
+	} // get_cache()
 
 
-/*
+/**
 * Use Cache
 */
 	protected function use_cache( $cache_key, $offset = null )
@@ -66,10 +72,10 @@ protected function is_new_user()
 			return TRUE;
 
 		return FALSE;
-	} // use_cache($cache_key)
+	} // use_cache()
 
 
-/*
+/**
 * Set Cache Time
 */
 	protected function set_cache_time( $cache_key )
@@ -79,7 +85,7 @@ protected function is_new_user()
 	} // set_update_time()
 
 
-/*
+/**
 * Get Cache Time
 */
 	protected function get_cache_time( $cache_key )
@@ -88,4 +94,4 @@ protected function is_new_user()
 	} // get_update_time()
 
 
-} //
+} // class Cache_Github_Api_V3
