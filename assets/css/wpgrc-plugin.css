@@ -7,3 +7,10 @@
 .wpgrc-widget .clear { clear: both; }
 .wpgrc-widget .polaroid { border: 5px solid white; }
 .wpgrc-widget .polaroid img { border: 1px solid #eeeeee; max-width: 100%; }
+
+.wpgrc-commit-info-wrap { margin-left: 10px; max-width: 75%; }
+.wpgrc-commit-info-wrap li { padding: 5px 0; }
+.wpgrc-commit-info-wrap .wpgrc-commit-repo-title a { font-size: 12px; text-decoration: none; }
+.wpgrc-commit-info-wrap a.wpgrc-repo-owner { font-weight: bold; }
+.wpgrc-commit-info-wrap a.wpgrc-commit-author { text-decoration: none; }
+.wpgrc-commit-info-wrap .wpgrc-commit-author-wrap { font-size: 12px; }

@@ -12,6 +12,19 @@
 		img {
 			border: 1px solid #EEE;
 			max-width: 100%;
-		}
-	}
+		} // img
+	} // .polaroid
 } // .wpgrc-widget
+
+.wpgrc-commit-info-wrap {
+	margin-left: 10px;
+	max-width: 75%;
+	li { padding: 5px 0; }
+	.wpgrc-commit-repo-title a {
+		font-size: 12px;
+		text-decoration: none;
+	} // .wpgrc-commit-repo-title a
+	a.wpgrc-repo-owner { font-weight: bold; }
+	a.wpgrc-commit-author { text-decoration: none; }
+	.wpgrc-commit-author-wrap { font-size: 12px;}
+} // .wpgrc-commit-info-wrap
