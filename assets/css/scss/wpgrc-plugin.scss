@@ -1,0 +1,17 @@
+/**
+* Author: Dan Holloran
+*/
+.wpgrc-widget {
+	// Utilities
+	.pull-right, &.pull-right { float: right; }
+	.pull-left, &.pull-left { float: left; }
+	.unstyled { list-style: none; margin-left: 0; }
+	.clear { clear: both; }
+	.polaroid {
+		border: 5px solid #FFF;
+		img {
+			border: 1px solid #EEE;
+			max-width: 100%;
+		}
+	}
+} // .wpgrc-widget
