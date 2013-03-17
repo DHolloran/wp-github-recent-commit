@@ -15,9 +15,9 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 	 * Constructor
 	 */
 	function __construct() {
-		$widget_ops = array( 'classname' => 'widget_dh_github_widget', 'description' => __( 'Simple Github widget.', 'roots' ) );
+		$widget_ops = array( 'classname' => 'widget_dh_github_widget', 'description' => __( 'Displays your latest GitHub commit from a public repository.', 'roots' ) );
 
-		$this->WP_Widget( 'widget_dh_github_widget', __( 'Github Widget', 'roots' ), $widget_ops );
+		$this->WP_Widget( 'widget_dh_github_widget', __( 'WP Github Recent Commit', 'roots' ), $widget_ops );
 		$this->alt_option_name = 'widget_dh_github_widget';
 
 		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
