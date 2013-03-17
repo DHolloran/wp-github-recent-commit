@@ -206,7 +206,7 @@ protected function validate_response( $response, $cache_key )
 
 		// Select Random Octocat
 		if ( !empty( $octocats ) ) {
-			$random = rand( 0, count( $octocats ) );
+			$random = rand( 0, count( $octocats ) - 1 );
 			return $octocats[$random];
 		} // if()
 
