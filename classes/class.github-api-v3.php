@@ -2,7 +2,7 @@
 /**
 *
 */
-class DH_Github_API_v3
+class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 {
 	protected $github_url;
 	protected $github_user;
@@ -13,9 +13,10 @@ class DH_Github_API_v3
 * Constructor
 */
 	public function __construct( $username, $widget_id ) {
+		parent::__construct();
 		$this->github_url = 'https://api.github.com';
 		$this->github_user = $username;
-		$this->flush_cache = false;
+		$this->flush_cache = FALSE;
 		$this->widget_id;
 	} // __construct()
 
@@ -26,9 +27,10 @@ class DH_Github_API_v3
 	public function widget_content()
 	{
 		$repo_names = $this->get_repos();
-		$commits = $this->get_commits( $repo_names );
-		$latest_commit_key = $this->get_latest_commit_key( $commits );
-		return $this->build_widget_output_array( $commits[$latest_commit_key] );
+		if( $repo_names ) $commits = $this->get_commits( $repo_names );
+		if ( isset( $commits ) AND $commits ) $latest_commit_key = $this->get_latest_commit_key( $commits );
+		if ( isset( $latest_commit_key ) ) return $this->build_widget_output_array( $commits[$latest_commit_key] );
+		return array();
 	} // widget_content()
 
 
@@ -37,7 +39,7 @@ class DH_Github_API_v3
 */
 	protected function get_repos()
 	{
-		$cache_key = 'github_repos_' . $this->widget_id;
+		$cache_key = 'wpgrc_repos_' . $this->widget_id;
 		$offset = 60 * 60 * 60; // 1 hour
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
@@ -45,6 +47,8 @@ class DH_Github_API_v3
 		} else {
 			$get_repos = wp_remote_get( "{$this->github_url}/users/{$this->github_user}/repos");
 			$repos = json_decode( wp_remote_retrieve_body( $get_repos ) );
+			if( !$this->validate_response( $repos, $cache_key ) ) return FALSE;
+
 			$repo_names = array();
 			foreach ( $repos as $repo ) {
 				array_push( $repo_names, $repo->name );
@@ -61,15 +65,18 @@ class DH_Github_API_v3
 */
 	protected function get_commits( $repo_names )
 	{
-		$cache_key = 'github_commits_' . $this->widget_id;
+		if ( empty( $repo_names ) ) return FALSE;
+
+		$cache_key = 'wpgrc_commits_' . $this->widget_id;
 		if ( $this->use_cache( $cache_key ) ) {
 			$commits = $this->get_cache( $cache_key );
 		} else {
 			$commits = array();
 			// Build array of commits
 			foreach ( $repo_names as $repo_name ) {
+				if( !$this->validate_response( $commits, $cache_key ) ) return FALSE;
 				$get_commits = wp_remote_get( "{$this->github_url}/repos/{$this->github_user}/{$repo_name}/commits?page=1&per_page=1");
-				$repo_commits = json_decode( wp_remote_retrieve_body( $get_commits ), true );
+				$repo_commits = json_decode( wp_remote_retrieve_body( $get_commits ), TRUE );
 				if ( !empty( $repo_commits ) ) {
 					$last_commit = $repo_commits[0];
 					array_push( $commits, $repo_commits[0] );
@@ -83,11 +90,29 @@ class DH_Github_API_v3
 	} // get_commits()
 
 
+
+/**
+* Validate Response
+*/
+protected function validate_response( $response, $cache_key )
+{
+	if ( !empty( $response->message ) ) {
+		$this->update_cache( $cache_key, FALSE );
+		return FALSE;
+	}
+
+	return TRUE;
+} // validate_response( $response )
+
+
 /*
 * Get Latest Commit Array Key
 */
 	protected function get_latest_commit_key( $commits )
 	{
+		// Make sure we have something to work with
+		if ( empty( $commits ) ) return FALSE;
+
 		$latest_commit_dates = array();
 		for ($i=0; $i < count( $commits ); $i++) {
 			$commit = $commits[$i];
@@ -106,6 +131,7 @@ class DH_Github_API_v3
 */
 	protected function build_widget_output_array( $commit )
 	{
+		if ( empty( $commit ) ) return FALSE;
 		$commit_info = array();
 		$commit_info['author'] = $commit['author']['login'];
 		$commit_info['author_email'] = $commit['commit']['author']['email'];
@@ -131,12 +157,12 @@ class DH_Github_API_v3
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $feedUrl);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 3);
-		// curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HEADER, false);
+		// curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($curl, CURLOPT_HEADER, FALSE);
 
 		// FeedBurner requires a proper USER-AGENT...
-		curl_setopt($curl, CURL_HTTP_VERSION_1_1, true);
+		curl_setopt($curl, CURL_HTTP_VERSION_1_1, TRUE);
 		curl_setopt($curl, CURLOPT_ENCODING, "gzip, deflate");
 		curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3");
 
@@ -167,7 +193,7 @@ class DH_Github_API_v3
 */
 	protected function get_random_octocat()
 	{
-		$cache_key = 'github_octocats_' . $this->widget_id;
+		$cache_key = 'wpgrc_octocats_' . $this->widget_id;
 		$offset = 24 * 60 * 60; // Once a day
 
 		if ( $this->use_cache( $cache_key, $offset ) ) {
@@ -186,61 +212,4 @@ class DH_Github_API_v3
 		return array();
 	} // get_random_octocat()
 
-
-/*
-* Update Cache
-*/
-	protected function update_cache( $cache_key, $cache_content )
-	{
-		// Cache Content
-		update_option( $cache_key, $cache_content );
-
-		// Cache Time
-		update_option( $cache_key . '_updated', time() );
-
-	} // update_cache()
-
-
-/*
-* Get Cache
-*/
-	function get_cache( $cache_key )
-	{
-		return get_option( $cache_key, false );
-	}
-
-
-/*
-* Use Cache
-*/
-	protected function use_cache( $cache_key, $offset = null )
-	{
-		$last_update_time = $this->get_cache_time( $cache_key );
-		$offset = ( is_null( $offset ) ) ? 30 * 60 * 60 : $offset; // Default Offset 30 minutes
-		if ( $last_update_time AND $last_update_time > time() - $offset )
-			return TRUE;
-
-		return FALSE;
-	} // use_cache($cache_key)
-
-
-/*
-* Set Cache Time
-*/
-	protected function set_cache_time( $cache_key )
-	{
-		update_option( $cache_key . '_updated', time() );
-		return true;
-	} // set_update_time()
-
-
-/*
-* Get Cache Time
-*/
-	protected function get_cache_time( $cache_key )
-	{
-		return get_option( $cache_key . '_updated', false );
-	} // get_update_time()
-
-
-} // END class DH_Github_API_v3
+} // END class WPGRC_Github_API_v3

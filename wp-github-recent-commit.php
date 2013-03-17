@@ -24,6 +24,7 @@ register_uninstall_hook( __FILE__, array( 'WPGRC_Init', 'on_uninstall' ) );
 /**
 * Setup Widget
 */
+require_once "classes/class.cache-github-api-v3.php";
 require_once "classes/class.github-api-v3.php";
 require_once "widget/github-widget.php";
 function wpgrc_widgets_init()
