@@ -88,7 +88,7 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 				<input class="widefat" id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" type="text" value="<?php echo ${$name}; ?>">
 			<?php else: ?>
 
-				<?php $checked = ( ${$name} == 'on' OR !isset($instance[$name]) ) ? 'checked="checked"': ''; ?>
+				<?php $checked = ( ${$name} == 'on' ) ? 'checked="checked"': ''; ?>
 				<input id="<?php echo esc_attr($this->get_field_id($name)); ?>" name="<?php echo esc_attr($this->get_field_name($name)); ?>" type="checkbox" value="on"<?php echo $checked; ?>>
 				<label for="<?php echo esc_attr($this->get_field_id($name)); ?>"><?php _e("{$label}", 'roots'); ?></label>
 			<?php endif ?>
