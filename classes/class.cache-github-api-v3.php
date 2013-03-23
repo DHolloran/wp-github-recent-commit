@@ -7,6 +7,7 @@ class Cache_Github_Api_V3
 	protected $github_username;
 	protected $github_repository_name;
 	protected $widget_id;
+	protected $refresh_interval;
 
 
 	/**
@@ -20,6 +21,8 @@ class Cache_Github_Api_V3
 		$this->github_username = $username;
 		$this->github_repository_name = $github_repository_name;
 		$this->widget_id = $widget_id;
+		$this->refresh_interval = $cache_refresh_interval;
+
 	} // __construct()
 
 
@@ -89,8 +92,16 @@ class Cache_Github_Api_V3
 		if ( $this->is_new_user() OR $this->is_new_repository() ) return FALSE;
 
 		$last_update_time = $this->get_cache_time( $cache_key );
-		$offset = ( is_null( $offset ) ) ? 30 * 60 * 60 : $offset; // Default Offset 30 minutes
-		if ( $last_update_time AND $last_update_time > time() - $offset )
+
+		// User selected cache refresh rate
+		if ( $this->refresh_interval != '' )
+			$refresh_interval = ( floatval( $this->refresh_interval ) * 60 ) * 60 * 60;
+
+		// Default cache refresh rate
+		if ($this->refresh_interval == '' OR $refresh_interval == 0 )
+			$refresh_interval = ( is_null( $offset ) ) ? 60 * 60 * 60 : $offset; // Default Offset 60 minutes
+
+		if ( $last_update_time AND $last_update_time > time() - $refresh_interval )
 			return TRUE;
 
 		return FALSE;
