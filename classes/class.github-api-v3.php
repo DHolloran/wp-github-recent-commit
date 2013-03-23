@@ -9,16 +9,21 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 	protected $github_user;
 	protected $flush_cache;
 	protected $widget_id;
+	protected $widget_instance;
+	protected $widget_args;
 
 /*
 * Constructor
 */
-	public function __construct( $username, $widget_id ) {
-		parent::__construct( $username );
+	public function __construct( $config ) {
+		extract( $config );
+		parent::__construct( $config );
 		$this->github_url = 'https://api.github.com';
 		$this->github_user = $username;
 		$this->flush_cache = FALSE;
-		$this->widget_id;
+		$this->widget_id = $widget_id;
+		$this->widget_args = $widget_args;
+		$this->widget_instance = $widget_instance;
 	} // __construct()
 
 
@@ -27,9 +32,33 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 */
 	public function widget_content()
 	{
-		$repo_names = $this->get_repos();
-		if( $repo_names ) $commits = $this->get_commits( $repo_names );
-		if ( isset( $commits ) AND $commits ) $latest_commit_key = $this->get_latest_commit_key( $commits );
+		extract( $this->widget_instance );
+		// Repos
+		if ( $github_repository_name != '' ) {
+			$repo_names = array();
+			$repo_names[]	=	$github_repository_name;
+		} else {
+			$repo_names = $this->get_repos();
+		} // if/else()
+
+		// Commits
+		if( $repo_names ) {
+			$commits = $this->get_commits( $repo_names );
+		} else {
+			return array( 'error_msg' => "No repositories could be found for the user name {$this->github_user}, please check that the user name is correct and try again" );
+		} // if/else()
+
+		// Latest Commits
+		if ( isset( $commits ) AND $commits[0] ) {
+			$latest_commit_key = $this->get_latest_commit_key( $commits );
+		} else {
+			if ( $github_repository_name != '' ) {
+				return array( 'error_msg' => "No commits could be found for repository {$github_repository_name} owned by user {$this->github_user}, please check that the repository name is correct and try again" );
+			} else {
+				return array( 'error_msg' => "No commits could be found for repositories owned by user {$this->github_user}, please check that the user name is correct and try again" );
+			} // if/else()
+		} // if/else()
+
 		if ( isset( $latest_commit_key ) ) return $this->build_widget_output_array( $commits[$latest_commit_key] );
 		return array();
 	} // widget_content()
@@ -75,9 +104,9 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 			$commits = array();
 			// Build array of commits
 			foreach ( $repo_names as $repo_name ) {
-				if( !$this->validate_response( $commits, $cache_key ) ) return FALSE;
 				$get_commits = wp_remote_get( "{$this->github_url}/repos/{$this->github_user}/{$repo_name}/commits?page=1&per_page=1");
 				$repo_commits = json_decode( wp_remote_retrieve_body( $get_commits ), TRUE );
+				if( !$this->validate_response( $repo_commits, $cache_key ) ) return FALSE;
 				if ( !empty( $repo_commits ) ) {
 					$last_commit = $repo_commits[0];
 					array_push( $commits, $last_commit );

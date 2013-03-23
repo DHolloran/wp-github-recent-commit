@@ -4,17 +4,22 @@
 */
 class Cache_Github_Api_V3
 {
-
 	protected $github_username;
+	protected $github_repository_name;
+	protected $widget_id;
 
 
 	/**
 	* Constructor
 	*/
-	function __construct( $username )
+	function __construct( $config )
 	{
-
+		extract( $config );
+		extract( $widget_instance );
+		extract( $widget_args );
 		$this->github_username = $username;
+		$this->github_repository_name = $github_repository_name;
+		$this->widget_id = $widget_id;
 	} // __construct()
 
 
@@ -33,6 +38,23 @@ class Cache_Github_Api_V3
 
 		return FALSE;
 	} // is_new_user()
+
+
+		/**
+	* Check If New Widget Repository
+	*/
+	protected function is_new_repository()
+	{
+		$key = 'github_repository_name' . $this->widget_id;
+		$new_repo = ( !empty( $this->github_repository_name ) ) ? $this->github_repository_name : '';
+		$current_repo = get_option( $key, FALSE );
+		if ( !$current_repo OR $current_repo !== $new_repo ) {
+			update_option( $key,  $new_repo );
+			return TRUE;
+		}
+
+		return FALSE;
+	} // is_new_repository()
 
 
 	/**
@@ -63,8 +85,8 @@ class Cache_Github_Api_V3
 */
 	protected function use_cache( $cache_key, $offset = null )
 	{
-		// Overides the cache if there is a new user
-		if ( $this->is_new_user() ) return FALSE;
+		// Overides the cache if there is a new user or repository
+		if ( $this->is_new_user() OR $this->is_new_repository() ) return FALSE;
 
 		$last_update_time = $this->get_cache_time( $cache_key );
 		$offset = ( is_null( $offset ) ) ? 30 * 60 * 60 : $offset; // Default Offset 30 minutes
