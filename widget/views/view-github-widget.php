@@ -27,7 +27,7 @@ if ( !empty( $widget_content ) AND !isset( $widget_content['error_msg'] ) ) {
 	<?php if ( $show_octocat == 'on' ): ?>
 	<div class="wpgrc-widget pull-left">
 		<div class="wpgrc-commit-octocat polaroid pull-left">
-			<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="<?php echo $octocat_width; ?>" height="<?php echo $octocat_height; ?>">
+			<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="<?php echo intval( $octocat_width ); ?>" height="<?php echo intval( $octocat_height ); ?>">
 		</div> <!-- /.wpgrc-commit-octocat -->
 	<?php else: ?>
 	<div class="wpgrc-widget no-octocat pull-left">
