@@ -7,9 +7,10 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 		'title'              				=> 'Title (optional)',
 		'github_username'    				=> 'Github Username (required)',
 		'github_repository_name'		=>	'Name of Repository (optional)',
+		'cache_refresh_interval'		=>	'Refresh Interval - in hours (optional)',
 		'show_octocat'      				=> 'Show Random Octocat (optional)',
-		'octocat_size_width'  			=> 'Octocat Width (default: 100px)',
-		'octocat_size_height'				=> 'Octocat Height (default: 100px)'
+		'octocat_size_width'  			=> 'Octocat Width - in px (optional)',
+		'octocat_size_height'				=> 'Octocat Height - in px (optional)'
 	);
 
 	/**
@@ -18,7 +19,7 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 	function __construct() {
 		$widget_ops = array( 'classname' => 'widget_dh_github_widget', 'description' => __( 'Displays your latest GitHub commit from a public repository.', 'roots' ) );
 
-		$this->WP_Widget( 'widget_dh_github_widget', __( 'WP Github Recent Commit', 'roots' ), $widget_ops );
+		$this->WP_Widget( 'widget_dh_github_widget', __( 'WPGRC Widget', 'roots' ), $widget_ops );
 		$this->alt_option_name = 'widget_dh_github_widget';
 
 		add_action( 'save_post', array( &$this, 'flush_widget_cache' ) );
@@ -96,18 +97,52 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 	* Form
 	*/
 	function form( $instance ) {
+
+		$defaults = array(
+			'cache_refresh_interval'		=>	'0.5',
+			'octocat_size_width'  			=> '100',
+			'octocat_size_height'				=> '100'
+		);
+		$instance = wp_parse_args( (array) $instance, $defaults );
 		foreach ( $this->fields as $name => $label ) {
 			${$name} = isset( $instance[$name] ) ? esc_attr( $instance[$name] ) : ''; ?>
 		<p>
+			<?php
+			switch ($name) {
+				case 'show_octocat':
+					$checked = ( ${$name} == 'on' ) ? 'checked="checked"': ''; ?>
+					<input id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="checkbox" value="on"<?php echo $checked; ?>>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}", 'roots' ); ?></label>
+					<?php break;
 
+				case 'cache_refresh_interval':
+					$rate = ( ${$name} != '' ) ? ${$name} : '0.5'; ?>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="0.1" value="<?php echo preg_replace( "/[^0-9.]/", "", ${$name} ); ?>">
+					<?php break;
+
+				case 'octocat_size_width':
+					$width = ( ${$name} != '' ) ? ${$name} : '100'; ?>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", ${$name} ); ?>">
+					<?php break;
+
+				case 'octocat_size_height':
+					$height = ( ${$name} != '' ) ? ${$name} : '100'; ?>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", ${$name} ); ?>">
+					<?php break;
+
+				default: ?>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="text" value="<?php echo ${$name}; ?>">
+					<?php break;
+			}?>
 			<?php if ( $name != 'show_octocat' ): ?>
-				<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
-				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="text" value="<?php echo ${$name}; ?>">
+
 			<?php else: ?>
 
-				<?php $checked = ( ${$name} == 'on' ) ? 'checked="checked"': ''; ?>
-				<input id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="checkbox" value="on"<?php echo $checked; ?>>
-				<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}", 'roots' ); ?></label>
+
 			<?php endif ?>
 
 		</p>
