@@ -37,7 +37,7 @@ add_action('widgets_init', 'wpgrc_widgets_init');
 * WPGRC Shortcode
 */
 function wpgrc_shortcode( $atts ) {
-	wpgrc( $atts );
+	return get_wpgrc( $atts );
 }
 add_shortcode( 'wpgrc','wpgrc_shortcode' );
 
@@ -45,7 +45,17 @@ add_shortcode( 'wpgrc','wpgrc_shortcode' );
 /**
 * WPGRC Function
 */
-function wpgrc( $args ) {
+function wpgrc( $args )
+{
+	echo get_wpgrc( $args );
+}
+
+
+/**
+* Get WPGRC
+*/
+function get_wpgrc( $args )
+{
 	$defaults = array(
 		'id'								=>	"1",
 		'username'					=>	'',
@@ -56,5 +66,9 @@ function wpgrc( $args ) {
 		'octocat_height'		=>	"100"
 	);
 	$instance = shortcode_atts( $defaults, $args );
+	$html = '';
+	$nl = "\n";
 	include "views/view-github-widget.php";
+	return $html;
 }
+

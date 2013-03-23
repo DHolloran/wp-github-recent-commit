@@ -3,9 +3,7 @@
 extract( $instance );
 
 // Github API
-$config = array(
-	'function_instance'	=>	$instance
-);
+$config = array( 'function_instance'	=>	$instance );
 $github_api = new WPGRC_Github_API_v3( $config );
 $widget_content = $github_api->widget_content();
 if ( !empty( $widget_content ) AND !isset( $widget_content['error_msg'] ) ) {
@@ -14,39 +12,38 @@ if ( !empty( $widget_content ) AND !isset( $widget_content['error_msg'] ) ) {
 	$repo_text = explode( '/', $repo_title );
 	$owner_name = $repo_text[0];
 	$repo_name = $repo_text[1];
-	?>
 
-	<!-- WPGRC WIDGET -->
-	<?php if ( $show_octocat ): ?>
-	<div class="wpgrc-widget pull-left">
-		<div class="wpgrc-commit-octocat polaroid pull-left">
-			<img class="pull-left" src="<?php echo $octocat_image_url; ?>" alt="<?php echo $octocat_name; ?>" width="<?php echo intval( $octocat_width ); ?>" height="<?php echo intval( $octocat_height ); ?>">
-		</div> <!-- /.wpgrc-commit-octocat -->
-	<?php else: ?>
-	<div class="wpgrc-widget no-octocat pull-left">
-	<?php endif ?>
+	$html .= '<!-- WPGRC WIDGET -->' . $nl;
+	if ( $show_octocat ) {
+		$html .= '<div class="wpgrc-widget pull-left">' . $nl;
+		$html .= '<div class="wpgrc-commit-octocat polaroid pull-left">' . $nl;
+		$html .= '<img class="pull-left" src="'.$octocat_image_url.'" alt="'.$octocat_name.'" width="'.intval( $octocat_width ).'" height="'.intval( $octocat_height ).'">' . $nl;
+		$html .= '</div> <!-- /.wpgrc-commit-octocat -->' . $nl;
+	} else {
+		$html .= '<div class="wpgrc-widget no-octocat pull-left">' . $nl;
+	}
 
-		<ul class="pull-left wpgrc-commit-info-wrap">
-			<li class="clear wpgrc-commit-repo-title">
-				<a href="https://github.com/<?php echo $owner_name; ?>" class="wpgrc-repo-owner" target="_blank"><?php echo $owner_name; ?></a>
-				<span>/</span>
-				<a href="<?php echo $repo_url; ?>" " class="wpgrc-repo-url" target="_blank"><?php echo $repo_name; ?></a>
-			</li>
-			<li class="clear wpgrc-commit-message pull-left"><?php echo $message; ?></li>
-			<li class="clear wpgrc-commit-author-wrap pull-left">
-				<span>Commited by:&nbsp;</span>
-				<a href="<?php echo $author_url; ?>" class="wpgrc-commit-author" target="_blank"><?php echo $author; ?></a>
-			</li>
-		</ul> <!-- /. wpgrc-commit-info-wrap -->
-	</div> <!-- /.wpgrc-widget -->
-	<!-- END WPGRC WIDGET -->
-<?php } else {
+	$html .= '<ul class="pull-left wpgrc-commit-info-wrap">' . $nl;
+	$html .= '<li class="clear wpgrc-commit-repo-title">' . $nl;
+	$html .= '<a href="https://github.com/'.$owner_name.'" class="wpgrc-repo-owner" target="_blank">'.$owner_name.'</a>' . $nl;
+	$html .= '<span>/</span>' . $nl;
+	$html .= '<a href="'.$repo_url.'" " class="wpgrc-repo-url" target="_blank">'.$repo_name.'</a>' . $nl;
+	$html .= '</li>' . $nl;
+	$html .= '<li class="clear wpgrc-commit-message pull-left">'.$message.'</li>' . $nl;
+	$html .= '<li class="clear wpgrc-commit-author-wrap pull-left">' . $nl;
+	$html .= '<span>Commited by:&nbsp;</span>' . $nl;
+	$html .= '<a href="'.$author_url.'" class="wpgrc-commit-author" target="_blank">'.$author.'</a>' . $nl;
+	$html .= '</li>' . $nl;
+	$html .= '</ul> <!-- /. wpgrc-commit-info-wrap -->' . $nl;
+	$html .= '</div> <!-- /.wpgrc-widget -->' . $nl;
+	$html .= '<!-- END WPGRC WIDGET -->' . $nl;
+} else {
 	if ( isset( $widget_content['error_msg'] ) ) {
 		$error_msg = $widget_content['error_msg'];
 	} else {
 		$error_msg = 'I am sorry, something went wrong when contacting GitHub please try again later.';
-	} // if/else() ?>
-	<!-- WPGRC WIDGET ERROR -->
-	<div class="wpgrc-error"><?php echo $error_msg; ?></div>
-	<!-- END WPGRC WIDGET ERROR -->
-<?php } // if/else(!empty($widget_content))
+	} // if/else()
+	$html .= '<!-- WPGRC WIDGET ERROR -->' . $nl;
+	$html .= '<div class="wpgrc-error">'.$error_msg.'</div>' . $nl;
+	$html .= '<!-- END WPGRC WIDGET ERROR -->' . $nl;
+} // if/else(!empty($widget_content))
