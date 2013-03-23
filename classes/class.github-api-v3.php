@@ -9,21 +9,43 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 	protected $github_user;
 	protected $flush_cache;
 	protected $widget_id;
-	protected $widget_instance;
-	protected $widget_args;
+	protected $selected_repository_name;
 
 /*
 * Constructor
 */
 	public function __construct( $config ) {
-		extract( $config );
 		parent::__construct( $config );
+
+		extract( $config );
 		$this->github_url = 'https://api.github.com';
-		$this->github_user = $username;
 		$this->flush_cache = FALSE;
-		$this->widget_id = $widget_id;
-		$this->widget_args = $widget_args;
-		$this->widget_instance = $widget_instance;
+
+		// Function Settings
+		if ( isset( $function_instance ) ) {
+			extract( $function_instance );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+		} // if()
+
+		// Shortcode Settings
+		if ( isset( $shortcode_instance ) ) {
+			extract( $shortcode_instance );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+		} // if()
+
+		// Widget Settings
+		if ( isset( $widget_instance ) ) {
+			extract( $widget_instance );
+			extract( $widget_args );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+		} // if()
+
 	} // __construct()
 
 
@@ -32,11 +54,10 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 */
 	public function widget_content()
 	{
-		extract( $this->widget_instance );
 		// Repos
-		if ( $github_repository_name != '' ) {
+		if ( $this->selected_repository_name != '' ) {
 			$repo_names = array();
-			$repo_names[]	=	$github_repository_name;
+			$repo_names[]	=	$this->selected_repository_name;
 		} else {
 			$repo_names = $this->get_repos();
 		} // if/else()
@@ -52,8 +73,8 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 		if ( isset( $commits ) AND $commits[0] ) {
 			$latest_commit_key = $this->get_latest_commit_key( $commits );
 		} else {
-			if ( $github_repository_name != '' ) {
-				return array( 'error_msg' => "No commits could be found for repository {$github_repository_name} owned by user {$this->github_user}, please check that the repository name is correct and try again" );
+			if ( $this->selected_repository_name != '' ) {
+				return array( 'error_msg' => "No commits could be found for repository {$this->selected_repository_name} owned by user {$this->github_user}, please check that the repository name is correct and try again" );
 			} else {
 				return array( 'error_msg' => "No commits could be found for repositories owned by user {$this->github_user}, please check that the user name is correct and try again" );
 			} // if/else()

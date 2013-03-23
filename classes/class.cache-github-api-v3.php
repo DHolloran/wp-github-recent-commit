@@ -4,8 +4,8 @@
 */
 class Cache_Github_Api_V3
 {
-	protected $github_username;
-	protected $github_repository_name;
+	protected $github_user;
+	protected $selected_repository_name;
 	protected $widget_id;
 	protected $refresh_interval;
 
@@ -16,12 +16,31 @@ class Cache_Github_Api_V3
 	function __construct( $config )
 	{
 		extract( $config );
-		extract( $widget_instance );
-		extract( $widget_args );
-		$this->github_username = $username;
-		$this->github_repository_name = $github_repository_name;
-		$this->widget_id = $widget_id;
-		$this->refresh_interval = $cache_refresh_interval;
+		// Function Settings
+		if ( isset( $function_instance ) ) {
+			extract( $function_instance );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+		} // if()
+
+		// Shortcode Settings
+		if ( isset( $shortcode_instance ) ) {
+			extract( $shortcode_instance );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+		} // if()
+
+		// Widget Settings
+		if ( isset( $widget_instance ) ) {
+			extract( $widget_instance );
+			extract( $widget_args );
+			$this->github_user = strtolower( $github_username );
+			$this->widget_id = $widget_id;
+			$this->selected_repository_name = $github_repository_name;
+			$this->refresh_interval = $cache_refresh_interval;
+		} // if()
 
 	} // __construct()
 
@@ -32,7 +51,7 @@ class Cache_Github_Api_V3
 	protected function is_new_user()
 	{
 		$key = 'github_username' . $this->widget_id;
-		$new_username = ( !empty( $this->github_username ) ) ? $this->github_username : '';
+		$new_username = ( !empty( $this->github_user ) ) ? $this->github_user : '';
 		$current_username = get_option( $key, FALSE );
 		if ( !$current_username OR $current_username !== $new_username ) {
 			update_option( $key,  $new_username );
@@ -49,7 +68,7 @@ class Cache_Github_Api_V3
 	protected function is_new_repository()
 	{
 		$key = 'github_repository_name' . $this->widget_id;
-		$new_repo = ( !empty( $this->github_repository_name ) ) ? $this->github_repository_name : '';
+		$new_repo = ( !empty( $this->selected_repository_name ) ) ? $this->selected_repository_name : '';
 		$current_repo = get_option( $key, FALSE );
 		if ( !$current_repo OR $current_repo !== $new_repo ) {
 			update_option( $key,  $new_repo );

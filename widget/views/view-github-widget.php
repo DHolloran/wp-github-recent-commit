@@ -8,8 +8,6 @@ $octocat_width = ( isset( $octocat_size_width ) AND is_numeric( $octocat_size_wi
 
 // Github API
 $config = array(
-	'username'				=> strtolower( $github_username ),
-	'widget_id'				=>	$widget_id,
 	'widget_args'			=>	$args,
 	'widget_instance'	=>	$instance
 );
