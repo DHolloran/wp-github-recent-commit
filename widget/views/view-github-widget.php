@@ -7,9 +7,15 @@ $octocat_height = ( isset( $octocat_size_height ) AND is_numeric( $octocat_size_
 $octocat_width = ( isset( $octocat_size_width ) AND is_numeric( $octocat_size_width ) ) ? floor( $octocat_size_width ) : 100;
 
 // Github API
-$github_api = new WPGRC_Github_API_v3( strtolower( $github_username ), $widget_id );
+$config = array(
+	'username'				=> strtolower( $github_username ),
+	'widget_id'				=>	$widget_id,
+	'widget_args'			=>	$args,
+	'widget_instance'	=>	$instance
+);
+$github_api = new WPGRC_Github_API_v3( $config );
 $widget_content = $github_api->widget_content();
-if ( !empty( $widget_content ) ) {
+if ( !empty( $widget_content ) AND !isset( $widget_content['error_msg'] ) ) {
 	extract( $widget_content );
 	extract( $octocat );
 	$repo_text = explode( '/', $repo_title );
@@ -41,8 +47,13 @@ if ( !empty( $widget_content ) ) {
 		</ul> <!-- /. wpgrc-commit-info-wrap -->
 	</div> <!-- /.wpgrc-widget -->
 	<!-- END WPGRC WIDGET -->
-<?php } else { ?>
+<?php } else {
+	if ( isset( $widget_content['error_msg'] ) ) {
+		$error_msg = $widget_content['error_msg'];
+	} else {
+		$error_msg = 'I am sorry, something went wrong when contacting GitHub please try again later.';
+	} // if/else() ?>
 	<!-- WPGRC WIDGET ERROR -->
-	<div class="wpgrc-error">I am sorry, something went wrong when contacting GitHub please try again later.</div>
+	<div class="wpgrc-error"><?php echo $error_msg; ?></div>
 	<!-- END WPGRC WIDGET ERROR -->
 <?php } // if/else(!empty($widget_content))
