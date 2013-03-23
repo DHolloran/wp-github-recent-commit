@@ -22,7 +22,7 @@ register_deactivation_hook( __FILE__, array( 'WPGRC_Init', 'on_deactivate' ) );
 register_uninstall_hook( __FILE__, array( 'WPGRC_Init', 'on_uninstall' ) );
 
 /**
-* Setup Widget
+* WPGRC Widget
 */
 require_once "classes/class.cache-github-api-v3.php";
 require_once "classes/class.github-api-v3.php";
@@ -32,3 +32,29 @@ function wpgrc_widgets_init()
 	register_widget( 'WP_Github_Recent_Commit_Widget' );
 }
 add_action('widgets_init', 'wpgrc_widgets_init');
+
+/**
+* WPGRC Shortcode
+*/
+function wpgrc_shortcode( $atts ) {
+	wpgrc( $atts );
+}
+add_shortcode( 'wpgrc','wpgrc_shortcode' );
+
+
+/**
+* WPGRC Function
+*/
+function wpgrc( $args ) {
+	$defaults = array(
+		'id'								=>	"1",
+		'username'					=>	'',
+		'repository'				=>	"",
+		'refresh_interval'	=>	"0.5",
+		'show_octocat'			=>	"true",
+		'octocat_width'			=>	"100",
+		'octocat_height'		=>	"100"
+	);
+	$instance = shortcode_atts( $defaults, $args );
+	include "views/view-github-widget.php";
+}

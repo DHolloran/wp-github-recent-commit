@@ -16,20 +16,12 @@ class Cache_Github_Api_V3
 	function __construct( $config )
 	{
 		extract( $config );
-		// Function Settings
+		// Function/Shortcode Settings
 		if ( isset( $function_instance ) ) {
 			extract( $function_instance );
-			$this->github_user = strtolower( $github_username );
-			$this->widget_id = $widget_id;
-			$this->selected_repository_name = $github_repository_name;
-		} // if()
-
-		// Shortcode Settings
-		if ( isset( $shortcode_instance ) ) {
-			extract( $shortcode_instance );
-			$this->github_user = strtolower( $github_username );
-			$this->widget_id = $widget_id;
-			$this->selected_repository_name = $github_repository_name;
+			$this->github_user = strtolower( $username );
+			$this->widget_id = $id;
+			$this->selected_repository_name = $repository;
 		} // if()
 
 		// Widget Settings

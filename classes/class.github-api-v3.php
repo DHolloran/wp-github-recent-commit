@@ -21,20 +21,12 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 		$this->github_url = 'https://api.github.com';
 		$this->flush_cache = FALSE;
 
-		// Function Settings
+		// Function/Shortcode Settings
 		if ( isset( $function_instance ) ) {
 			extract( $function_instance );
-			$this->github_user = strtolower( $github_username );
-			$this->widget_id = $widget_id;
-			$this->selected_repository_name = $github_repository_name;
-		} // if()
-
-		// Shortcode Settings
-		if ( isset( $shortcode_instance ) ) {
-			extract( $shortcode_instance );
-			$this->github_user = strtolower( $github_username );
-			$this->widget_id = $widget_id;
-			$this->selected_repository_name = $github_repository_name;
+			$this->github_user = strtolower( $username );
+			$this->widget_id = $id;
+			$this->selected_repository_name = $repository;
 		} // if()
 
 		// Widget Settings
@@ -61,7 +53,6 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 		} else {
 			$repo_names = $this->get_repos();
 		} // if/else()
-
 		// Commits
 		if( $repo_names ) {
 			$commits = $this->get_commits( $repo_names );
@@ -70,7 +61,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 		} // if/else()
 
 		// Latest Commits
-		if ( isset( $commits ) AND $commits[0] ) {
+		if ( !empty( $commits ) AND isset( $commits[0] ) ) {
 			$latest_commit_key = $this->get_latest_commit_key( $commits );
 		} else {
 			if ( $this->selected_repository_name != '' ) {
@@ -128,7 +119,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 				$get_commits = wp_remote_get( "{$this->github_url}/repos/{$this->github_user}/{$repo_name}/commits?page=1&per_page=1");
 				$repo_commits = json_decode( wp_remote_retrieve_body( $get_commits ), TRUE );
 				if( !$this->validate_response( $repo_commits, $cache_key ) ) return FALSE;
-				if ( !empty( $repo_commits ) ) {
+				if ( !empty( $repo_commits ) AND isset( $repo_commits[0] ) ) {
 					$last_commit = $repo_commits[0];
 					array_push( $commits, $last_commit );
 				} // if()
