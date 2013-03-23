@@ -4,13 +4,14 @@
 
 **Plugin Home Page:** not approved
 
+Check out a [demo](http://demo.danholloran.com/github-commit-widget-demo/) here.
 
 **Thanks to:** If your project is included and I do not have you added please let me know, thank you.
 
 If you have any issues please submit an [issue](https://github.com/DHolloran/wp-github-recent-commit/issues/new) or fix it/submit a pull request I will try to handle it ASAP. You an also contact me at [Dan@danholloran.com](mailto:dan@danholloran.com).
 
 ##Screenshots
-![image](screenshot1.png)  
+![image](screenshot1.png)
 ![image](screenshot2.png)
 
 ##Getting Started
@@ -30,7 +31,7 @@ To get started with WP Github Recent Commit you can download it directly [here](
 2. Fill in your GitHub username and set the rest of the options
 
 ###Using the function
-1. Place this code in your template file  
+1. Place this code in your template file
 2. Add a user name and set any other options
 
 		if ( function_exists('wpgrc') ) {
