@@ -4,11 +4,12 @@
  */
 class WP_Github_Recent_Commit_Widget extends WP_Widget {
 	private $fields = array(
-		'title'              => 'Title (optional)',
-		'github_username'    => 'Github Username (required)',
-		'show_octocat'      => 'Show Random Octocat',
-		'octocat_size_width'  => 'Octocat Width (default: 100px)',
-		'octocat_size_height'  => 'Octocat Height (default: 100px)'
+		'title'              				=> 'Title (optional)',
+		'github_username'    				=> 'Github Username (required)',
+		'github_repository_name'		=>	'Name of Repository (optional)',
+		'show_octocat'      				=> 'Show Random Octocat (optional)',
+		'octocat_size_width'  			=> 'Octocat Width (default: 100px)',
+		'octocat_size_height'				=> 'Octocat Height (default: 100px)'
 	);
 
 	/**
