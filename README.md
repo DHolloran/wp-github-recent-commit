@@ -2,7 +2,7 @@
 
 **Description:** Wordpress widget that grabs a random Octocat from the octodex and the latest commit from the master branch of a public GitHub repository
 
-**Plugin Home Page:** not approved
+**Plugin Home Page:** [http://wordpress.org/extend/plugins/wp-github-recent-commit/](http://wordpress.org/extend/plugins/wp-github-recent-commit/)
 
 Check out a [demo](http://demo.danholloran.com/github-commit-widget-demo/) here.
 
