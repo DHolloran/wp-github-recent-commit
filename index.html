@@ -1,40 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>WP Github Recent Commit by DHolloran</title>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="WP Github Recent Commit : Wordpress widget that grabs a random octocat and the latest commit from a public github repository" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>WP Github Recent Commit</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">WP Github Recent Commit</h1>
-        <p class="header">Wordpress widget that grabs a random octocat and the latest commit from a public github repository</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/DHolloran/wp-github-recent-commit/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/DHolloran/wp-github-recent-commit/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/DHolloran/wp-github-recent-commit">View On GitHub</a></li>
-        </ul>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/DHolloran/wp-github-recent-commit">View on GitHub</a>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/DHolloran">DHolloran</a></p>
+          <h1 id="project_title">WP Github Recent Commit</h1>
+          <h2 id="project_tagline">Wordpress widget that grabs a random octocat and the latest commit from a public github repository</h2>
 
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/DHolloran/wp-github-recent-commit/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/DHolloran/wp-github-recent-commit/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
-      </header>
-      <section>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>WP Github Recent Commit</h1>
 
 <p><strong>Description:</strong> Wordpress widget that grabs a random Octocat from the octodex and the latest commit from the master branch of a public GitHub repository</p>
 
 <p><strong>Plugin Home Page:</strong> not approved</p>
+
+<p>Check out a <a href="http://demo.danholloran.com/github-commit-widget-demo/">demo</a> here.</p>
 
 <p><strong>Thanks to:</strong> If your project is included and I do not have you added please let me know, thank you.</p>
 
@@ -42,34 +45,66 @@
 
 <h2>Screenshots</h2>
 
-<p><img src="https://raw.github.com/DHolloran/wp-github-recent-commit/master/screenshot1.png" alt="image"><br><img src="https://raw.github.com/DHolloran/wp-github-recent-commit/master/screenshot2.png" alt="image"></p>
+<p><img src="https://raw.github.com/DHolloran/wp-github-recent-commit/master/screenshot1.png" alt="image"><img src="https://raw.github.com/DHolloran/wp-github-recent-commit/master/screenshot2.png" alt="image"></p>
 
 <h2>Getting Started</h2>
 
-<p>To get started with WP Github Recent Commit you can download it directly <a href="https://github.com/DHolloran/wp-github-recent-commit/archive/master.zip">here</a>, search for WP Github Recent Commit in your administrator section's Plugins &gt; Add New, or you can download it from the <a href="#">Wordpress plugins directory</a> (not approved).</p>
+<p>To get started with WP Github Recent Commit you can download it directly <a href="https://github.com/DHolloran/wp-github-recent-commit/archive/master.zip">here</a>, search for WP Github Recent Commit in your administrator section's Plugins &gt; Add New, or you can download it from the <a href="http://wordpress.org/extend/plugins/wp-github-recent-commit/">Wordpress plugins directory</a></p>
 
 <h3>Wordpress Plugin Directory Instructions</h3>
 
 <ol>
 <li>Search for WP Github Recent Commit in Plugins &gt; Add New</li>
 <li>Install &amp; Activate WP Github Recent Commit</li>
-<li>Go to Appearance &gt; Widgets drag the WP Github Recent Commit widget to the sidebar area of your choice</li>
-<li>Fill in your GitHub username</li>
 </ol><h3>Manual Install Instructions</h3>
 
 <ol>
 <li>Unzip your download and place in wp-content/plugins/</li>
 <li>Activate WP Github Recent Commit in the Wordpress Admin area</li>
+</ol><h3>Using the widget</h3>
+
+<ol>
 <li>Go to Appearance &gt; Widgets drag the WP Github Recent Commit widget to the sidebar area of your choice</li>
-<li>Fill in your GitHub username</li>
+<li>Fill in your GitHub username and set the rest of the options</li>
+</ol><h3>Using the function</h3>
+
+<ol>
+<li>Place this code in your template file</li>
+<li>
+<p>Add a user name and set any other options</p>
+
+<pre><code>if ( function_exists('wpgrc') ) {
+    wpgrc( array(
+        'id'                =&gt;  "1", // optional, used for caching purposes
+        'username'          =&gt;  '', // required, it just won't work with out it
+        'repository'        =&gt;  "", // optional, if not it will just be the last commit from all repos for the username
+        'refresh_interval'  =&gt;  "0.5", // optional default 0.5hrs aka 30min
+        'show_octocat'      =&gt;  "true", // optional boolean default true
+        'octocat_width'     =&gt;  "100", // optional int default 100
+        'octocat_height'    =&gt;  "100" // optional int default 100
+    ) );
+}
+</code></pre>
+</li>
+</ol><h3>Using the shortcode</h3>
+
+<ol>
+<li>Place in your admin editor <code>[wpgrc id="1" username="" repository="" refresh_interval="0.5" show_octocat="true" octocat_width="100" octocat_height="100" ]</code>
+</li>
+<li>Add a user name and set any other options</li>
 </ol>
       </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">WP Github Recent Commit maintained by <a href="https://github.com/DHolloran">DHolloran</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
+
+              <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
@@ -79,6 +114,7 @@
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
