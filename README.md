@@ -11,8 +11,8 @@ Check out a [demo](http://demo.danholloran.com/github-commit-widget-demo/) here.
 If you have any issues please submit an [issue](https://github.com/DHolloran/wp-github-recent-commit/issues/new) or fix it/submit a pull request I will try to handle it ASAP. You an also contact me at [Dan@danholloran.com](mailto:dan@danholloran.com).
 
 ##Screenshots
-![image](screenshot1.png)
-![image](screenshot2.png)
+![image](screenshot-1.png)
+![image](screenshot-2.png)
 
 ##Getting Started
 To get started with WP Github Recent Commit you can download it directly [here](https://github.com/DHolloran/wp-github-recent-commit/archive/master.zip), search for WP Github Recent Commit in your administrator section's Plugins > Add New, or you can download it from the [Wordpress plugins directory](http://wordpress.org/extend/plugins/wp-github-recent-commit/)
