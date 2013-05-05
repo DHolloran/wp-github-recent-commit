@@ -62,10 +62,11 @@ class Cache_Github_Api_V3
 		$key = 'github_repository_name' . $this->widget_id;
 		$new_repo = ( !empty( $this->selected_repository_name ) ) ? $this->selected_repository_name : '';
 		$current_repo = get_option( $key, FALSE );
-		if ( !$current_repo OR $current_repo !== $new_repo ) {
+
+		if ( $current_repo === FALSE OR $current_repo !== $new_repo ) {
 			update_option( $key,  $new_repo );
 			return TRUE;
-		}
+		} // if()
 
 		return FALSE;
 	} // is_new_repository()
