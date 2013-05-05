@@ -13,6 +13,23 @@ Author URI: http://danholloran.com/
 */
 
 
+/*
+* Pretty Print Debug Function
+*/
+if ( !function_exists( 'pp' ) ) {
+	function pp( $value )
+	{
+		if( $_SERVER['HTTP_HOST'] != 'localhost' ) return;
+		echo "<pre>";
+		if ( $value ) {
+			print_r( $value );
+		} else {
+			var_dump( $value );
+		}
+		echo "</pre>";
+	} // pp()
+}
+
 /**
 * Handles Activation/Deactivation/Install
 */
@@ -30,7 +47,7 @@ require_once "widget/github-widget.php";
 function wpgrc_widgets_init()
 {
 	register_widget( 'WP_Github_Recent_Commit_Widget' );
-}
+} // wpgrc_widgets_init()
 add_action('widgets_init', 'wpgrc_widgets_init');
 
 /**
@@ -38,7 +55,7 @@ add_action('widgets_init', 'wpgrc_widgets_init');
 */
 function wpgrc_shortcode( $atts ) {
 	return get_wpgrc( $atts );
-}
+} // wpgrc_shortcode()
 add_shortcode( 'wpgrc','wpgrc_shortcode' );
 
 
@@ -48,7 +65,7 @@ add_shortcode( 'wpgrc','wpgrc_shortcode' );
 function wpgrc( $args )
 {
 	echo get_wpgrc( $args );
-}
+} // wpgrc()
 
 
 /**
@@ -70,5 +87,5 @@ function get_wpgrc( $args )
 	$nl = "\n";
 	include "views/view-github-widget.php";
 	return $html;
-}
+} // get_wpgrc()
 
