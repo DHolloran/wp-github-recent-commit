@@ -10,7 +10,9 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 		'cache_refresh_interval'		=>	'Refresh Interval - in hours (optional)',
 		'show_octocat'      				=> 'Show Random Octocat (optional)',
 		'octocat_size_width'  			=> 'Octocat Width - in px (optional)',
-		'octocat_size_height'				=> 'Octocat Height - in px (optional)'
+		'octocat_size_height'				=> 'Octocat Height - in px (optional)',
+		'commit_count'							=>	'Number of Commits to Display',
+		'show_user_avatar'					=>	"Show the Commit Authors Avatar <br> <i>(if displaying more than 1 commit)</i>"
 	);
 
 	/**
@@ -118,20 +120,33 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 				case 'cache_refresh_interval':
 					$rate = ( ${$name} != '' ) ? ${$name} : '0.5'; ?>
 					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
-					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="0.1" value="<?php echo preg_replace( "/[^0-9.]/", "", ${$name} ); ?>">
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="0.1" value="<?php echo preg_replace( "/[^0-9.]/", "", $rate ); ?>">
 					<?php break;
 
 				case 'octocat_size_width':
 					$width = ( ${$name} != '' ) ? ${$name} : '100'; ?>
 					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
-					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", ${$name} ); ?>">
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", $width ); ?>">
 					<?php break;
 
 				case 'octocat_size_height':
 					$height = ( ${$name} != '' ) ? ${$name} : '100'; ?>
 					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
-					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", ${$name} ); ?>">
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", $height ); ?>">
 					<?php break;
+
+				case 'commit_count':
+					$count = ( ${$name} != '' ) ? ${$name} : '1'; ?>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
+					<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="number" min="0" step="1" value="<?php echo preg_replace( "/[^0-9]/", "", $count ); ?>">
+					<?php break;
+
+				case 'show_user_avatar':
+					$checked = ( ${$name} == 'on' ) ? 'checked="checked"': ''; ?>
+					<input id="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( $name ) ); ?>" type="checkbox" value="on"<?php echo $checked; ?>>
+					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}", 'roots' ); ?></label>
+					<?php break;
+
 
 				default: ?>
 					<label for="<?php echo esc_attr( $this->get_field_id( $name ) ); ?>"><?php _e( "{$label}:", 'roots' ); ?></label>
