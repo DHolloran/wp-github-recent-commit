@@ -2,7 +2,7 @@
 
 // Widget Instance
 extract( $args );
-extract($instance);
+extract( $instance );
 $octocat_height = ( isset( $octocat_size_height ) AND is_numeric( $octocat_size_height ) ) ? floor( $octocat_size_height ) : 100;
 $octocat_width = ( isset( $octocat_size_width ) AND is_numeric( $octocat_size_width ) ) ? floor( $octocat_size_width ) : 100;
 
@@ -35,7 +35,7 @@ if ( !empty( $widget_content ) AND !isset( $widget_content['error_msg'] ) ) {
 			<li class="clear wpgrc-commit-repo-title">
 				<a href="https://github.com/<?php echo $owner_name; ?>" class="wpgrc-repo-owner" target="_blank"><?php echo $owner_name; ?></a>
 				<span>/</span>
-				<a href="<?php echo $repo_url; ?>" " class="wpgrc-repo-url" target="_blank"><?php echo $repo_name; ?></a>
+				<a href="<?php echo $repo_url; ?>" class="wpgrc-repo-url" target="_blank"><?php echo $repo_name; ?></a>
 			</li>
 			<li class="clear wpgrc-commit-message pull-left"><?php echo $message; ?></li>
 			<li class="clear wpgrc-commit-author-wrap pull-left">
