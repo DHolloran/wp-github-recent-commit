@@ -43,9 +43,11 @@ To get started with WP Github Recent Commit you can download it directly [here](
 				'show_octocat'		=>	"true", // optional boolean default true
 				'octocat_width'		=>	"100", // optional int default 100
 				'octocat_height'	=>	"100" // optional int default 100
+				'commit_count'		=>	"1", // optional int default 1
+				'show_avatar'		=>	false  // optional boolean default false
 			) );
 		}
 
 ###Using the shortcode
-1. Place in your admin editor `[wpgrc id="1" username="" repository="" refresh_interval="0.5" show_octocat="true" octocat_width="100" octocat_height="100" ]`
+1. Place in your admin editor `[wpgrc id="1" username="" repository="" refresh_interval="0.5" show_octocat="true" octocat_width="100" octocat_height="100" commit_count="1" show_avatar="false"]`
 2. Add a user name and set any other options

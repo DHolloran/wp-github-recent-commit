@@ -28,7 +28,7 @@ if ( !function_exists( 'pp' ) ) {
 		}
 		echo "</pre>";
 	} // pp()
-}
+} // if()
 
 /**
 * Handles Activation/Deactivation/Install
