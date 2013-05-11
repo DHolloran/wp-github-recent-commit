@@ -11,8 +11,8 @@ Check out a [demo](http://demo.danholloran.com/github-commit-widget-demo/) here.
 If you have any issues please submit an [issue](https://github.com/DHolloran/wp-github-recent-commit/issues/new) or fix it/submit a pull request I will try to handle it ASAP. You an also contact me at [Dan@danholloran.com](mailto:dan@danholloran.com).
 
 ##Screenshots
-![image](screenshot1.png)
-![image](screenshot2.png)
+![image](screenshot-1.png)
+![image](screenshot-2.png)
 
 ##Getting Started
 To get started with WP Github Recent Commit you can download it directly [here](https://github.com/DHolloran/wp-github-recent-commit/archive/master.zip), search for WP Github Recent Commit in your administrator section's Plugins > Add New, or you can download it from the [Wordpress plugins directory](http://wordpress.org/extend/plugins/wp-github-recent-commit/)
@@ -43,9 +43,11 @@ To get started with WP Github Recent Commit you can download it directly [here](
 				'show_octocat'		=>	"true", // optional boolean default true
 				'octocat_width'		=>	"100", // optional int default 100
 				'octocat_height'	=>	"100" // optional int default 100
+				'commit_count'		=>	"1", // optional int default 1
+				'show_avatar'		=>	false  // optional boolean default false
 			) );
 		}
 
 ###Using the shortcode
-1. Place in your admin editor `[wpgrc id="1" username="" repository="" refresh_interval="0.5" show_octocat="true" octocat_width="100" octocat_height="100" ]`
+1. Place in your admin editor `[wpgrc id="1" username="" repository="" refresh_interval="0.5" show_octocat="true" octocat_width="100" octocat_height="100" commit_count="1" show_avatar="false"]`
 2. Add a user name and set any other options
