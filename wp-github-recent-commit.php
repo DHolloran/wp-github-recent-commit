@@ -80,7 +80,9 @@ function get_wpgrc( $args )
 		'refresh_interval'	=>	"0.5",
 		'show_octocat'			=>	"true",
 		'octocat_width'			=>	"100",
-		'octocat_height'		=>	"100"
+		'octocat_height'		=>	"100",
+		'commit_count'			=>	"1",
+		'show_avatar'				=>	false
 	);
 	$instance = shortcode_atts( $defaults, $args );
 	$html = '';

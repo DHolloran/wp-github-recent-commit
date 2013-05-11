@@ -9,10 +9,10 @@ class WP_Github_Recent_Commit_Widget extends WP_Widget {
 		'github_repository_name'		=>	'Name of Repository (optional)',
 		'cache_refresh_interval'		=>	'Refresh Interval - in hours (optional)',
 		'show_octocat'      				=> 'Show Random Octocat (optional)',
-		'octocat_size_width'  			=> 'Octocat Width - in px (optional)',
-		'octocat_size_height'				=> 'Octocat Height - in px (optional)',
-		'commit_count'							=>	'Number of Commits to Display',
-		'show_user_avatar'					=>	"Show the Commit Authors Avatar <br> <i>(if displaying more than 1 commit)</i>"
+		'show_user_avatar'					=>	"Show the Commit Authors Avatar <br> <i>(This will override the random Octocat)</i>",
+		'octocat_size_width'  			=> 'Octocat/Avatar Width - in px (optional)',
+		'octocat_size_height'				=> 'Octocat/Avatar Height - in px (optional)',
+		'commit_count'							=>	'Number of Commits to Display'
 	);
 
 	/**

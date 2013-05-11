@@ -29,6 +29,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 			$this->github_user = strtolower( $username );
 			$this->widget_id = $id;
 			$this->selected_repository_name = $repository;
+			$this->commit_count = ( isset( $commit_count ) AND is_numeric( $commit_count ) ) ? intval( $commit_count ) : 1;
 		} // if()
 
 		// Widget Settings
@@ -67,10 +68,22 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 		// Latest Commits
 		if ( !empty( $commits ) AND isset( $commits[0] ) AND $this->commit_count === 1 ) {
 			$latest_commit_key = $this->get_latest_commit_key( $commits );
-			if ( isset( $latest_commit_key ) )
+			if ( isset( $latest_commit_key ) AND $latest_commit_key )
 				return $this->build_widget_output_array( array( $commits[$latest_commit_key] ) );
 		} elseif ( !empty( $commits ) ){
-			return $this->build_widget_output_array( $commits );
+			if ( count( $commits ) > $this->commit_count ) {
+				$final_commits = array();
+				for ($i=0; $i < $this->commit_count; $i++) {
+					$commit_key = $this->get_latest_commit_key( $commits );
+					if ( isset( $commit_key ) AND $commit_key )
+						$final_commits[] = $commits[$commit_key];
+
+					unset( $commits[$commit_key] );
+				} // foreach()
+				return $this->build_widget_output_array( $final_commits );
+			} else {
+				return $this->build_widget_output_array( $commits );
+			} // if/else()
 		} else {
 			if ( $this->selected_repository_name != '' ) {
 				return array( 'error_msg' => "No commits could be found for repository {$this->selected_repository_name} owned by user {$this->github_user}, please check that the repository name is correct and try again" );
@@ -168,13 +181,19 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 
 		$latest_commit_dates = array();
 		for ($i=0; $i < count( $commits ); $i++) {
-			$commit = $commits[$i];
-			$latest_commit_dates[$i] = strtotime( $commit['commit']['author']['date'] );
+			if ( isset( $commits[$i] ) ) {
+				$commit = $commits[$i];
+				$latest_commit_dates[$i] = strtotime( $commit['commit']['author']['date'] );
+			} // if()
 		} //for()
 
-		$value = max( $latest_commit_dates );
-		$key = array_search( $value, $latest_commit_dates );
-		return $key;
+		if ( is_array( $latest_commit_dates ) AND !empty( $latest_commit_dates ) ) {
+			$value = max( $latest_commit_dates );
+			$key = array_search( $value, $latest_commit_dates );
+			return $key;
+		} // if
+
+		return false;
 	} // get_latest_commit_key($commits)
 
 
@@ -191,6 +210,7 @@ class WPGRC_Github_API_v3 extends Cache_Github_Api_V3
 			$commit_info['author'] = $commit['author']['login'];
 			$commit_info['author_email'] = $commit['commit']['author']['email'];
 			$commit_info['author_url'] = $commit['author']['html_url'];
+			$commit_info['author_avatar_url'] = $commit['author']['avatar_url'];
 			$commit_info['message'] = $commit['commit']['message'];
 			$commit_info['repo_url'] = str_replace( array( 'api.', 'repos/', 'commits/', $commit['sha']), '', $commit['url'] );
 			$commit_info['repo_title'] = rtrim( str_replace( array( 'https://github.com/' ), '', $commit_info['repo_url'] ), '/' );
